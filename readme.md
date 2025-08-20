@@ -1,5 +1,3 @@
-[![.NET CI](https://github.com/igormmarques/prova-bonifiq/actions/workflows/ci.yml/badge.svg)](https://github.com/igormmarques/prova-bonifiq/actions/workflows/ci.yml)
-
 # Prova BonifiQ — API + Testes
 
 Este repositório contém a API **ProvaPub** (.NET 6) e a suíte de **testes automatizados** com xUnit. 
@@ -36,12 +34,12 @@ prova-bonifiq/
 - `Parte1Controller` retorna `ActionResult<int>` e trata exceções amigavelmente.
 
 ### Parte 2 — Paginação e redução de duplicidade
-- Criamos um **DTO genérico `PagedResult<T>`** para evitar repetição (`CustomerList`/`ProductList`).
+- Criado um **DTO genérico `PagedResult<T>`** para evitar repetição (`CustomerList`/`ProductList`).
 - `CustomerService` e `ProductService` agora paginam com `OrderBy + Skip + Take` e retornam `PagedResult<T>`.
 - Controllers passaram a usar **Injeção de Dependências (DI)**, sem `new Service(...)`.
 
 ### Parte 3 — Open/Closed para pagamentos
-- Introduzimos **Strategy** para pagamentos: `IPaymentProcessor` com `PixPaymentProcessor`, `CreditCardPaymentProcessor`, `PaypalPaymentProcessor`.
+- Introduzido **Strategy** para pagamentos: `IPaymentProcessor` com `PixPaymentProcessor`, `CreditCardPaymentProcessor`, `PaypalPaymentProcessor`.
 - `OrderService.PayOrder` apenas seleciona a estratégia por `paymentMethod` (sem ifs encadeados no método).
 - `OrderDate` salvo **em UTC** no banco; o Controller devolve **UTC-3** na resposta.
 - Campos de pagamento adicionados ao `Order` para testes e consistência (`PaymentMethod`, `PaymentProvider`, `PaymentStatus`, `PaymentTransactionId`).
