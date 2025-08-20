@@ -23,15 +23,15 @@ jobs:
       - name: Build (Release)
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test with coverage
+      - name: Test with coverage (opencover)
         run: >
           dotnet test tests/ProvaPub.Tests/ProvaPub.Tests.csproj
           --configuration Release
           --no-build
           --logger "trx;LogFileName=test-results.trx"
           /p:CollectCoverage=true
-          /p:CoverletOutput=tests/ProvaPub.Tests/TestResults/Coverage/
-          /p:CoverletOutputFormat=opencover,lcov,json
+          /p:CoverletOutput=tests/ProvaPub.Tests/TestResults/Coverage/coverage.opencover.xml
+          /p:CoverletOutputFormat=opencover
 
       - name: Upload test results
         if: always()
