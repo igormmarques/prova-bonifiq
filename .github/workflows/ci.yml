@@ -9,23 +9,13 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET 6.x
+      - name: Setup .NET 6
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
-
-      - name: Cache NuGet
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
 
       - name: Restore
         run: dotnet restore
@@ -35,13 +25,13 @@ jobs:
 
       - name: Test with coverage
         run: >
-          dotnet test ProvaPub.Tests/ProvaPub.Tests.csproj
+          dotnet test tests/ProvaPub.Tests/ProvaPub.Tests.csproj
           --configuration Release
           --no-build
           --logger "trx;LogFileName=test-results.trx"
           /p:CollectCoverage=true
-          /p:CoverletOutput=TestResults/Coverage/
-          /p:CoverletOutputFormat=lcov%2copencover%2cjson
+          /p:CoverletOutput=tests/ProvaPub.Tests/TestResults/Coverage/
+          /p:CoverletOutputFormat=opencover,lcov,json
 
       - name: Upload test results
         if: always()
@@ -51,4 +41,3 @@ jobs:
           path: |
             **/TestResults/**/*.trx
             **/TestResults/Coverage/**
-
